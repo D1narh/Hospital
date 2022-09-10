@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="BD" id="Project-117d" database="SqlServer" >
+	<schema name="INSTANCE" catalogname="BD" >
+		<table name="Appointment" prior="Tbl" >
+			<column name="Id" type="int" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="Service_Id" type="int" jt="4" mandatory="y" />
+			<column name="Client_Id" type="int" jt="4" mandatory="y" />
+			<column name="Start_date" type="datetime" jt="92" mandatory="y" />
+			<column name="Employee_Id" type="int" jt="4" mandatory="y" />
+			<column name="Departament_Id" type="int" jt="4" mandatory="y" />
+			<index name="pk_Appointment" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+			<index name="unq_Appointment_Service_Id" unique="UNIQUE_KEY" >
+				<column name="Service_Id" />
+			</index>
+			<index name="unq_Appointment_Departament_Id" unique="UNIQUE_KEY" >
+				<column name="Departament_Id" />
+			</index>
+			<fk name="fk_Appointment_Report" to_schema="BD.INSTANCE" to_table="Report" >
+				<fk_column name="Id" pk="Appointment_Id" />
+			</fk>
+		</table>
+		<table name="Cabinet" prior="Tbl" >
+			<column name="Id" type="int" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY(1,1)]]></identity>
+			</column>
+			<column name="Employee_Id" type="int" jt="4" mandatory="y" />
+			<column name="Departament_Id" type="int" jt="4" mandatory="y" />
+			<index name="pk_Cabinet" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+			<index name="unq_Cabinet_Departament_Id" unique="UNIQUE_KEY" >
+				<column name="Departament_Id" />
+			</index>
+		</table>
+		<table name="Card_Line" prior="TblCard_Line" >
+			<column name="Id" type="int" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="Card_Id" type="int" jt="4" mandatory="y" />
+			<column name="Recording" type="nvarchar" length="1000" jt="12" mandatory="y" />
+			<column name="Date_add" type="datetime" jt="92" mandatory="y" />
+			<index name="pk_Card_Line" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+		</table>
+		<table name="Client" >
+			<column name="Id" type="int" jt="4" mandatory="y" />
+			<column name="Adres" type="varchar" length="255" jt="12" mandatory="y" />
+			<column name="Telephone" type="varchar" length="20" jt="12" />
+			<column name="Name" type="varchar" length="30" jt="12" mandatory="y" />
+			<column name="First_Name" type="varchar" length="30" jt="12" mandatory="y" />
+			<column name="Last_Name" type="varchar" length="30" jt="12" />
+			<column name="Birthday" type="date" jt="91" mandatory="y" />
+			<column name="Medical_Insurance" type="int" jt="4" mandatory="y" />
+			<column name="Status" type="char" length="40" jt="1" />
+			<column name="Gender" type="int" jt="4" mandatory="y" />
+			<index name="pk_entity" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+			<fk name="fk_Client_Receipt" to_schema="BD.INSTANCE" to_table="Receipt" >
+				<fk_column name="Id" pk="Client_Id" />
+			</fk>
+			<fk name="fk_Client_Medical_Card" to_schema="BD.INSTANCE" to_table="Medical_Card" >
+				<fk_column name="Id" pk="Id" />
+			</fk>
+		</table>
+		<table name="Departament" prior="entity" >
+			<column name="Id" type="int" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="Floor" type="int" jt="4" mandatory="y" />
+			<column name="Name" type="varchar" length="30" jt="12" mandatory="y" />
+			<index name="pk_entity_0" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+			<fk name="fk_Departament_Cabinet" to_schema="BD.INSTANCE" to_table="Cabinet" >
+				<fk_column name="Id" pk="Departament_Id" />
+			</fk>
+			<fk name="fk_Departament_Appointment" to_schema="BD.INSTANCE" to_table="Appointment" >
+				<fk_column name="Id" pk="Departament_Id" />
+			</fk>
+		</table>
+		<table name="Employee" prior="Tbl" >
+			<column name="Id" type="int" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="Name" type="varchar" length="30" jt="12" mandatory="y" />
+			<column name="First_Name" type="varchar" length="30" jt="12" mandatory="y" />
+			<column name="Last_Name" type="varchar" length="30" jt="12" />
+			<column name="Position_Id" type="int" jt="4" mandatory="y" />
+			<column name="Telephone" type="int" jt="4" />
+			<column name="Departament_Id" type="int" jt="4" mandatory="y" />
+			<column name="Birthday" type="date" jt="91" mandatory="y" />
+			<column name="Medical_Insurance" type="int" jt="4" mandatory="y" />
+			<index name="pk_Employee" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+			<index name="unq_Employee_Position_Id" unique="UNIQUE_KEY" >
+				<column name="Position_Id" />
+			</index>
+			<fk name="fk_Employee_Departament" to_schema="BD.INSTANCE" to_table="Departament" >
+				<fk_column name="Departament_Id" pk="Id" />
+			</fk>
+		</table>
+		<table name="Medical_Card" prior="Tbl" >
+			<column name="Id" type="int" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="Start_treatment" type="date" jt="91" mandatory="y" />
+			<column name="End_treatment" type="date" jt="91" />
+			<index name="pk_Medical_Card" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+			<fk name="fk_Medical_Card_Card_Line" to_schema="BD.INSTANCE" to_table="Card_Line" >
+				<fk_column name="Id" pk="Id" />
+			</fk>
+			<fk name="fk_Medical_Card_Medical_Card_Appointment" to_schema="BD.INSTANCE" to_table="Medical_Card_Appointment" >
+				<fk_column name="Id" pk="Id" />
+			</fk>
+		</table>
+		<table name="Medical_Card_Appointment" prior="Tbl" >
+			<column name="Id" type="int" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="Appointment_Id" type="int" jt="4" mandatory="y" />
+			<column name="Date" type="date" jt="91" mandatory="y" />
+			<index name="pk_Medical_Card_Appointment" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+		</table>
+		<table name="Position" prior="Tbl" >
+			<column name="Id" type="int" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="Name" type="varchar" length="30" jt="12" mandatory="y" />
+			<index name="pk_Position" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+			<fk name="fk_Position_Employee" to_schema="BD.INSTANCE" to_table="Employee" >
+				<fk_column name="Id" pk="Position_Id" />
+			</fk>
+		</table>
+		<table name="Receipt" prior="Tbl" >
+			<column name="Id" type="int" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="Client_Id" type="int" jt="4" mandatory="y" />
+			<column name="Date_add" type="date" jt="91" mandatory="y" />
+			<index name="pk_Receipt" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+			<index name="unq_Receipt_Client_Id" unique="UNIQUE_KEY" >
+				<column name="Client_Id" />
+			</index>
+			<fk name="fk_Receipt_Receipt_Line" to_schema="BD.INSTANCE" to_table="Receipt_Line" >
+				<fk_column name="Id" pk="Receipt_Id" />
+			</fk>
+		</table>
+		<table name="Receipt_Line" prior="Tbl" >
+			<column name="Id" type="int" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="Receipt_Id" type="int" jt="4" mandatory="y" />
+			<column name="Service_Id" type="int" jt="4" mandatory="y" />
+			<column name="Amount" type="int" jt="4" mandatory="y" />
+			<column name="Price" type="money" jt="3" mandatory="y" />
+			<index name="pk_Receipt_Line" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+			<index name="unq_Receipt_Line_Receipt_Id" unique="UNIQUE_KEY" >
+				<column name="Receipt_Id" />
+			</index>
+		</table>
+		<table name="Report" prior="Tbl" >
+			<column name="Id" type="int" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="Client_Id" type="int" jt="4" mandatory="y" />
+			<column name="Employee_Id" type="int" jt="4" mandatory="y" />
+			<column name="Recording" type="nvarchar" length="1000" jt="12" mandatory="y" />
+			<column name="Date" type="date" jt="91" mandatory="y" />
+			<column name="Appointment_Id" type="int" jt="4" mandatory="y" />
+			<index name="pk_Report" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+			<index name="unq_Report_Appointment_Id" unique="UNIQUE_KEY" >
+				<column name="Appointment_Id" />
+			</index>
+		</table>
+		<table name="Service" prior="Tbl" >
+			<column name="Id" type="int" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="Name" type="varchar" length="30" jt="12" mandatory="y" />
+			<column name="Service_time" type="int" jt="4" mandatory="y" />
+			<column name="Price" type="money" jt="3" />
+			<column name="Departament_Id" type="int" jt="4" mandatory="y" />
+			<column name="Employee_Id" type="int" jt="4" mandatory="y" />
+			<column name="Cabinet_Id" type="int" jt="4" mandatory="y" />
+			<index name="pk_Service" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+			<fk name="fk_Service_Appointment_0" to_schema="BD.INSTANCE" to_table="Appointment" >
+				<fk_column name="Id" pk="Service_Id" />
+			</fk>
+		</table>
+		<table name="Ward" prior="Tbl" >
+			<column name="Id" type="int" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="Departament_Id" type="int" jt="4" mandatory="y" />
+			<column name="Place" type="int" jt="4" mandatory="y" />
+			<column name="Owner_Place" type="int" jt="4" mandatory="y" />
+			<column name="Employee_Id" type="int" jt="4" mandatory="y" />
+			<column name="Gender" type="bit" jt="-7" />
+			<index name="pk_Ward" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+			<fk name="fk_Ward_Departament" to_schema="BD.INSTANCE" to_table="Departament" >
+				<fk_column name="Departament_Id" pk="Id" />
+			</fk>
+			<fk name="fk_Ward_Ward_Client" to_schema="BD.INSTANCE" to_table="Ward_Client" >
+				<fk_column name="Id" pk="Ward_Id" />
+			</fk>
+		</table>
+		<table name="Ward_Client" prior="Tbl" >
+			<column name="Id" type="int" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="Ward_Id" type="int" jt="4" mandatory="y" />
+			<column name="Client_Id" type="int" jt="4" mandatory="y" />
+			<column name="Date_Invite" type="date" jt="91" mandatory="y" />
+			<column name="Date_Leave" type="date" jt="91" mandatory="y" />
+			<index name="pk_Ward_Client" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+			<index name="unq_Ward_Client_Ward_Id" unique="UNIQUE_KEY" >
+				<column name="Ward_Id" />
+			</index>
+		</table>
+	</schema>
+	<connector name="MySql" database="MySql" host="localhost" port="3306" user="DESKTOP-PU825S2" />
+	<layout name="Default Layout" id="Layout-1de1" confirmed="y" show_relation="columns" >
+		<entity schema="BD.INSTANCE" name="Appointment" color="C1D8EE" x="672" y="624" />
+		<entity schema="BD.INSTANCE" name="Cabinet" color="C1D8EE" x="448" y="480" />
+		<entity schema="BD.INSTANCE" name="Card_Line" color="C1D8EE" x="48" y="576" />
+		<entity schema="BD.INSTANCE" name="Client" color="C1D8EE" x="416" y="672" />
+		<entity schema="BD.INSTANCE" name="Departament" color="C1D8EE" x="656" y="480" />
+		<entity schema="BD.INSTANCE" name="Employee" color="C1D8EE" x="864" y="368" />
+		<entity schema="BD.INSTANCE" name="Medical_Card" color="C1D8EE" x="208" y="576" />
+		<entity schema="BD.INSTANCE" name="Medical_Card_Appointment" color="C1D8EE" x="192" y="736" />
+		<entity schema="BD.INSTANCE" name="Position" color="C1D8EE" x="880" y="240" />
+		<entity schema="BD.INSTANCE" name="Receipt" color="C1D8EE" x="896" y="768" />
+		<entity schema="BD.INSTANCE" name="Receipt_Line" color="C1D8EE" x="896" y="896" />
+		<entity schema="BD.INSTANCE" name="Report" color="C1D8EE" x="656" y="816" />
+		<entity schema="BD.INSTANCE" name="Service" color="C1D8EE" x="880" y="576" />
+		<entity schema="BD.INSTANCE" name="Ward" color="C1D8EE" x="624" y="224" />
+		<entity schema="BD.INSTANCE" name="Ward_Client" color="C1D8EE" x="624" y="48" />
+		<form name="Report" id="Report-11d" template="Page" css="container-fluid" view="frame" confirmed="y" >
+			<var name="TablePageNumber" type="4" value="0" mandatory="n" />
+			<var name="TableRecordsPerPage" type="4" value="100" mandatory="n" />
+			<body name="Body" template="Grid" css="grid my-5 gap-10" pos="0,0,0,0,f,f" layout="{{-2,-2,-2,-2,-1},{-2,-2,-2,-2}}" scroll="n" html="n" >
+				<cell type="label" name="Table" template="H3" pos="0,0,1,0,l,c" />
+				<cell type="chart" name="Pie" template="Pie" pos="0,1,4,1,l,c" max_records="20" >
+					<form_script type="DataSource" language="SQL" >
+						<var name="Id" type="4" />
+						<var name="Service_Id" type="4" />
+						<var name="Client_Id" type="4" />
+						<var name="Start_date" type="92" />
+						<var name="Employee_Id" type="4" />
+						<var name="Departament_Id" type="4" />
+						<script ><![CDATA[SELECT * FROM BD.INSTANCE.Appointment]]></script>
+					</form_script>
+					<param name="width" value="100%" />
+					<param name="v0" value="Departament_Id" />
+					<param name="title" value="Sample Chart" />
+					<param name="height" value="400px" />
+				</cell>
+				<tableview name="Table" template="Table" css="table table-striped table-sm table-hover" pos="0,2,4,2,f,f" layout="{{-2,-2,-2,-2,-2,-2,-2},{-2,-2}}" scroll="n" html="n" header_rows="1" >
+					<form_script type="DataSource" language="SQL" >
+						<var name="Id" type="4" />
+						<var name="Service_Id" type="4" />
+						<var name="Client_Id" type="4" />
+						<var name="Start_date" type="92" />
+						<var name="Employee_Id" type="4" />
+						<var name="Departament_Id" type="4" />
+						<script ><![CDATA[SELECT * FROM BD.INSTANCE.Appointment]]></script>
+					</form_script>
+					<cell type="label" name="Id" pos="0,0,0,0,c,c" />
+					<cell type="label" name="Service_Id" pos="1,0,1,0,c,c" />
+					<cell type="label" name="Client_Id" pos="2,0,2,0,c,c" />
+					<cell type="label" name="Start_date" pos="3,0,3,0,c,c" />
+					<cell type="label" name="Employee_Id" pos="4,0,4,0,c,c" />
+					<cell type="label" name="Departament_Id" pos="5,0,5,0,c,c" />
+					<cell type="label" name="Button can open other pages." pos="6,0,6,0,c,c" />
+					<cell type="label" name="${Id}" template="Plain" pos="0,1,0,1,l,c" />
+					<cell type="label" name="${Service_Id}" template="Plain" pos="1,1,1,1,l,c" />
+					<cell type="label" name="${Client_Id}" template="Plain" pos="2,1,2,1,l,c" />
+					<cell type="label" name="${Start_date}" template="Plain" pos="3,1,3,1,l,c" />
+					<cell type="label" name="${Employee_Id}" template="Plain" pos="4,1,4,1,l,c" />
+					<cell type="label" name="${Departament_Id}" template="Plain" pos="5,1,5,1,l,c" />
+					<cell type="button" name="More" template="Plain" css="btn btn-default btn-success" pos="6,1,6,1,c,c" ref_id="Report-11d" />
+				</tableview>
+				<cell type="href" name="" disabled="${TablePageNumber&lt;1}" pos="0,3,0,3,l,c" glyph="FA-ANGLE_DOUBLE_LEFT" ref_id="Report-11d" >
+					<var name="TablePageNumber" value="0" />
+				</cell>
+				<cell type="href" name="" disabled="${TablePageNumber&lt;1}" pos="1,3,1,3,l,c" glyph="FA-ANGLE_LEFT" ref_id="Report-11d" >
+					<var name="TablePageNumber" value="${Math.max(0,TablePageNumber-1)}" />
+				</cell>
+				<cell type="label" name="Page ${TablePageNumber+1}" pos="2,3,2,3,l,c" />
+				<cell type="href" name="" disabled="${!TableHasNextPage}" pos="3,3,3,3,l,c" glyph="FA-ANGLE_RIGHT" ref_id="Report-11d" >
+					<var name="TablePageNumber" value="${( TablePageNumber+1 )}" />
+				</cell>
+			</body>
+		</form>
+	</layout>
+</project>
